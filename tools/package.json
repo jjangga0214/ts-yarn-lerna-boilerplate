@@ -10,6 +10,8 @@
     "prettier.config.js",
     "tslint.config.json"
   ],
-  "scripts": {
+  "scripts": {},
+  "dependencies": {
+    "link-module-alias": "^1.2.0"
   }
 }

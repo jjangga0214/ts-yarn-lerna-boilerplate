@@ -1,4 +1,4 @@
-import { run } from '@jjangga0214/bar';
+import { run } from '~bar';
 
 describe('index', () => {
   it('run', () => {

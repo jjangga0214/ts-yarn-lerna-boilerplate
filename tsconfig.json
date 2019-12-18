@@ -8,7 +8,8 @@
     "paths": {
       "@jjangga0214/*": ["*/src"],
       "~foo/*": ["foo/src/*"],
-      "~bar/*": ["bar/src/*"]
+      "~bar/*": ["bar/src/*"],
+      "~*": ["*/src"]
     },
     "strict": true,
     "noUnusedLocals": true,
@@ -23,6 +24,5 @@
     "esModuleInterop": true,
     "incremental": true,
     "resolveJsonModule": true
-  },
-  "exclude": ["node_modules", "dist"]
+  }
 }

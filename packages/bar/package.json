@@ -12,9 +12,9 @@
     "~bar": "dist"
   },
   "scripts": {
-    "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc -b . && link-module-alias",
-    "clean": "shx rm -rf dist coverage *.log junit.xml && tsc --build --clean && jest --clearCache",
+    "postinstall": "shx mkdir -p dist",
+    "build": "tsc -p tsconfig.build.json && link-module-alias",
+    "clean": "shx rm -rf dist coverage *.log junit.xml ../../.build-cache/bar.tsbuildinfo && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
     "test:watch": "jest --watch",
@@ -26,10 +26,8 @@
     "lint:fix": "tslint --project . --fix"
   },
   "dependencies": {
-    "link-module-alias": "^1.2.0"
-  },
-  "devDependencies": {
-    "@jjangga0214/tools": "0.0.1"
+    "link-module-alias": "^1.2.0",
+    "@jjangga0214/foo": "^1.0.0"
   },
   "tslint": {
     "extends": "../../tslint.json"

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { doubleNumbers } from '@jjangga0214/foo';
 
 export const run = () => {
@@ -5,4 +6,4 @@ export const run = () => {
   return value;
 };
 
-console.log(run())
+console.log(run());

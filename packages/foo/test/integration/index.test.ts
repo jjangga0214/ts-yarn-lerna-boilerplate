@@ -1,4 +1,4 @@
-import { doubleNumbers } from '@jjangga0214/foo';
+import { doubleNumbers } from '~foo';
 
 describe('This is an unit test', () => {
   it('doubleNumbers', () => {
