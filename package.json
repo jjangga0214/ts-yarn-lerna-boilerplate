@@ -19,8 +19,7 @@
     "coverage": "lerna run --parallel coverage",
     "coverage:show": "lerna run --parallel coverage:show",
     "lint": "lerna run --parallel lint",
-    "lint:fix": "lerna run --parallel lint:fix",
-    "link-packages": "lerna link"
+    "lint:fix": "lerna run --parallel lint:fix"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.1.0",
@@ -51,9 +50,5 @@
     "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.4.3"
-  },
-  "dependencies": {
-    "link-module-alias": "^1.2.0",
-    "shelljs": "^0.8.3"
   }
 }

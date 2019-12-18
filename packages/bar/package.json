@@ -26,6 +26,7 @@
     "lint:fix": "tslint --project . --fix"
   },
   "dependencies": {
+    "link-module-alias": "^1.2.0"
   },
   "devDependencies": {
     "@jjangga0214/tools": "0.0.1"

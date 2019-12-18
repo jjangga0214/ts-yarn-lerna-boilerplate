@@ -10,7 +10,7 @@ Lerna respects and and delegates monorepo management to yarn workspace, by `'use
 
 ## Jest
 
-[ts-jest](https://github.com/kulshekhar/ts-jest) is used. Jest respects **path mapping** specified in [tsconfig.json](./tsconfig.json), by configuring `moduleNameMapper`.
+[ts-jest](https://github.com/kulshekhar/ts-jest) is used.
 
 ## Dev
 
@@ -20,7 +20,7 @@ Lerna respects and and delegates monorepo management to yarn workspace, by `'use
 
 This project has two packages, `foo`(`@jjangga0214/foo`) and `bar`(`@jjangga0214/bar`). `bar` depends on `foo`.
 
-### module aliases and path mappings
+### Module aliases and path mappings
 
 <!-- markdownlint-disable no-duplicate-heading -->
 
@@ -28,7 +28,7 @@ This project has two packages, `foo`(`@jjangga0214/foo`) and `bar`(`@jjangga0214
 
 <!-- markdownlint-enable no-duplicate-heading -->
 
-For `ts-node-dev` to understand **path mapping**, [tsconfig-paths](https://github.com/dividab/tsconfig-paths) is used.
+For `ts-node-dev` to understand **path mapping**, [`tsconfig-paths`](https://github.com/dividab/tsconfig-paths) is used.
 
 <!-- markdownlint-disable no-duplicate-heading -->
 
@@ -60,7 +60,7 @@ But `bar` should not import `~foo`, `~foo/hello` nor `@jjangga0214/foo/hello`, c
   "baseUrl": "packages",
   "paths": {
     "@jjangga0214/*": ["*/src"],
-    "@jjangga0214/foo/*": ["foo/src/*"] // => this one!
++   "@jjangga0214/foo/*": ["foo/src/*"] // => this one!
     // ... other paths
   }
 }
@@ -68,4 +68,26 @@ But `bar` should not import `~foo`, `~foo/hello` nor `@jjangga0214/foo/hello`, c
 
 #### Module Aliases
 
-Though `~foo` or `~bar` will be resolved when `yarn dev` thanks to `tsconfig-paths` and just to be compiled well, they will throw an Error(`Module Not Found`) at runtime. That's where [`link-module-alias`](https://github.com/Rush/link-module-alias) comes in. By making symlink, `~foo` and `~bar` are resolved. The configuration resides in each package.json. Please make sure your read the docs for it. (As of writing, there's a known issue when `@` is used, but with this repo's given configuration(`~` instead of `@`, for example), there's no problem.)
+Though `~foo` or `~bar` will be resolved when `yarn dev` thanks to `tsconfig-paths` and just to be compiled well, they will throw an Error(`Module Not Found`) at runtime. That's where [`link-module-alias`](https://github.com/Rush/link-module-alias) comes in. By making symlink, `~foo` and `~bar` are resolved. The configuration resides in each package.json (by `_moduleAliases` field).
+
+<!-- markdownlint-disable no-duplicate-heading -->
+
+#### Jest
+
+<!-- markdownlint-enable no-duplicate-heading -->
+
+Jest respects **path mapping** by reading `tsconfig.json` and configuring `moduleNameMapper`.
+
+### Root commands
+
+Introducing some of commands specified in `package.json`.
+
+```bash
+# remove compiled js folders, typescript build info, jest cache, *.log, and test coverage
+yarn clean
+
+# open web browser to show test coverage report.
+# run this AFTER running `yarn coverage`,
+# to make it sure there are reports before showing them.
+yarn coverage:show
+```

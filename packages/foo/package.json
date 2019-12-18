@@ -26,7 +26,10 @@
     "lint": "tslint --project .",
     "lint:fix": "tslint --project . --fix"
   },
-  "dependencies": {},
+  "dependencies": {
+    "link-module-alias": "^1.2.0",
+    "shx": "^0.3.2"
+  },
   "devDependencies": {},
   "tslint": {
     "extends": "../../tslint.json"
