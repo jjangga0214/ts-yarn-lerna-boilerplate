@@ -1,0 +1,9 @@
+import { doubleNumbers } from '~foo/index';
+
+describe('index', () => {
+  it('doubleNumbers', () => {
+    expect.hasAssertions();
+    expect(doubleNumbers([1, 2, 3])).toEqual([2, 4, 6]);
+    expect(doubleNumbers([6, 2, 13])).toEqual([12, 4, 26]);
+  });
+});

@@ -1,0 +1,59 @@
+{
+  "name": "@jjangga0214/monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/**",
+    "tools"
+  ],
+  "scripts": {
+    "start": "echo start",
+    "build": "lerna run build",
+    "build:fresh": "yarn clean && yarn build",
+    "clean": "shx rm -rf .build-cache *.log && lerna run clean",
+    "test": "lerna run --parallel test",
+    "test:watch": "lerna run --parallel test:watch",
+    "test:ci": "lerna run --parallel test:ci",
+    "coverage": "lerna run --parallel coverage",
+    "coverage:show": "lerna run --parallel coverage:show",
+    "lint": "lerna run --parallel lint",
+    "lint:fix": "lerna run --parallel lint:fix",
+    "link-packages": "lerna link"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.7.5",
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "5.3.0",
+    "eslint-config-airbnb-base": "13.2.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.9.0",
+    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^1.3.1",
+    "jest": "^24.7.1",
+    "jest-junit": "^10.0.0",
+    "lerna": "^3.13.2",
+    "lint-staged": "^8.1.5",
+    "live-server": "^1.2.1",
+    "markdownlint-cli": "^0.19.0",
+    "prettier": "^1.16.4",
+    "serve": "^11.2.0",
+    "ts-jest": "^24.2.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.4.3"
+  },
+  "dependencies": {
+    "link-module-alias": "^1.2.0",
+    "shelljs": "^0.8.3"
+  }
+}

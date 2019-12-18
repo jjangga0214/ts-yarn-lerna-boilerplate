@@ -1,0 +1,36 @@
+{
+  "name": "@jjangga0214/bar",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
+  "files": [
+    "dist"
+  ],
+  "_moduleAliases": {
+    "~bar": "dist"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "build": "tsc -b . && link-module-alias",
+    "clean": "shx rm -rf dist coverage *.log junit.xml && tsc --build --clean && jest --clearCache",
+    "test": "jest",
+    "test:unit": "jest test/unit",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
+    "coverage": "jest --coverage",
+    "coverage:show": "live-server coverage/lcov-report",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "lint": "tslint --project .",
+    "lint:fix": "tslint --project . --fix"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@jjangga0214/tools": "0.0.1"
+  },
+  "tslint": {
+    "extends": "../../tslint.json"
+  }
+}
