@@ -20,6 +20,16 @@ Lerna respects and and delegates monorepo management to yarn workspace, by `'use
 
 This project has two packages, `foo`(`@jjangga0214/foo`) and `bar`(`@jjangga0214/bar`). `bar` depends on `foo`.
 
+### tsconfig
+
+1. VSCode only respects `tsconfig.json` as of writing (until [vscode/#12463](https://github.com/microsoft/vscode/issues/12463) is resolved.). Therefore, build-specific configurations (e.g. `include`, `exclude`, `rootDir`, etc) are in `tsconfig.build.json`. If you replace `tsconfig.build.json` by `tsconfig.json`, project workflow will still work (e.g. `compilation`, `yarn dev`, `test`), but VSCode will not help you by its feature, like `type checking`, or `go to definition`, etc.
+
+2. `yarn build` executes `tsc -p tsconfig.build.json`, thus it does not build referenced project. For example, `yarn build` under `bar` does not build `foo`, unlike `tsc -b tsconfig.build.json`. Even though `-b` option is not used, `project references` are still used. Indeed, it's necessary.
+
+3. By the way, `tsc -b tsconfig.build.json` will mess working space. As it will find `tsconfig.json` from referenced project. For example, `bar` references `foo`. `tsc -b tsconfig.build.json` under `bar` will find `bar/tsconfig.build.json`, which is expected, but `tsc` will use `foo/tsconfig.json`, not `foo/tsconfig.build.json`, while compiling `foo`.
+
+4. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` will not find paths mapping, although `../../tsconfig.json` is given to ``ts-node-dev` (env var `TS_NODE_PROJECT` will not work, either).
+
 ### Module aliases and path mappings
 
 <!-- markdownlint-disable no-duplicate-heading -->
@@ -42,9 +52,10 @@ For `ts-node-dev` to understand **path mapping**, [`tsconfig-paths`](https://git
 {
   "baseUrl": "packages",
   "paths": {
-    "@jjangga0214/*": ["*/src"],
-    "~foo/*": ["foo/src/*"],
-    "~bar/*": ["bar/src/*"]
+    "@jjangga0214/*": ["*/src"], // e.g. `@jjangga0214/foo` -> `foo/src`
+    "~foo/*": ["foo/src/*"], // e.g. `~foo/hello` -> `foo/src/hello.ts`
+    "~bar/*": ["bar/src/*"],
+    "~*": ["*/src"] // e.g. `~foo` -> `foo/src`
   }
 }
 ```
@@ -53,14 +64,27 @@ For `ts-node-dev` to understand **path mapping**, [`tsconfig-paths`](https://git
 
 However, `~foo` and `~bar` are only used for package's interal use. For example, `foo/src/index.ts` imports `~foo/hello`, which is same as `./hello`. This can be useful for a package with deep and wide directory tree, as an absolute path can be used. For example, `foo/src/your/very/deep/module/index.ts` can import `~foo/another/deeper/module/index` instead of `../../../../another/deeper/module/index`.
 
-But `bar` should not import `~foo`, `~foo/hello` nor `@jjangga0214/foo/hello`, causing errors. The former two(`~foo` and `~foo/hello`) have to be avoided. To import `@jjangga0214/foo/hello` in `bar`, you should add explicit configuration like this.
+But be careful of `paths` orders for precedence. If the order changes, like the below, `~foo/hello` will be resolved to `foo/hello/src`, not `foo/src/hello`.
+
+```json
+{
+  "baseUrl": "packages",
+  "paths": {
+    "~*": ["*/src"],
+    "~foo/*": ["foo/src/*"], // => this will not work!
+    "~bar/*": ["bar/src/*"] // => this will not work!
+  }
+}
+```
+
+Note that `bar` must not import `~foo`, `~foo/hello`, causing errors (I'm pretty sure there's no reason to do that). But importing `@jjangga0214/foo/hello` in `bar` makes sense in some cases. For that, you should explicitly add additaional configuration like this.
 
 ```json
 {
   "baseUrl": "packages",
   "paths": {
     "@jjangga0214/*": ["*/src"],
-+   "@jjangga0214/foo/*": ["foo/src/*"] // => this one!
++   "@jjangga0214/foo/*": ["foo/src/*"], // => this one!
     // ... other paths
   }
 }
@@ -76,7 +100,7 @@ Though `~foo` or `~bar` will be resolved when `yarn dev` thanks to `tsconfig-pat
 
 <!-- markdownlint-enable no-duplicate-heading -->
 
-Jest respects **path mapping** by reading `tsconfig.json` and configuring `moduleNameMapper`.
+Jest respects **path mapping** by automatically reading `tsconfig.json` and configuring `moduleNameMapper`. This is done by `ts-jest/utils`. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
 
 ### Root commands
 
