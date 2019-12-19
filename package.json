@@ -23,7 +23,8 @@
     "lint:md": "markdownlint --ignore node_modules --ignore .git",
     "format": "yarn lint --fix",
     "format:md": "yarn lint:md --fix",
-    "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1"
+    "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
+    "commit": "git cz"
   },
   "husky": {
     "hooks": {
@@ -48,6 +49,7 @@
     "@types/node": "^12.7.5",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
+    "commitizen": "^4.0.3",
     "cross-env": "^6.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "eslint": "^6.1.0",
