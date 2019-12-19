@@ -104,7 +104,7 @@ Jest respects **path mapping** by automatically reading `tsconfig.json` and conf
 
 ### Link and Formatter
 
-`eslint` and `prettier` is used along each other. `eslint-config-airbnb-base` (not `eslint-config-airbnb`, which includes `jsx` rules) is used as well. eslint plugins for jest and markdown(not for markdown itself, but for code block snippet appeared in markdown) is also configured.
+`eslint` and `prettier` is used along each other. `eslint-config-airbnb-base` (not `eslint-config-airbnb`, which includes `jsx` rules) is used as well. [`eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest/issues) and [`eslint-plugin-markdown`](https://github.com/eslint/eslint-plugin-markdown) (not for markdown itself, but for code block snippet appeared in markdown) are also configured.
 
 By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript files are able to be linted by `eslint`. (e.g. So typescript rules are not applied to `.js` files.)
 
