@@ -28,7 +28,7 @@ This project has two packages, `foo`(`@jjangga0214/foo`) and `bar`(`@jjangga0214
 
 3. By the way, `tsc -b tsconfig.build.json` will mess working space. As it will find `tsconfig.json` from referenced project. For example, `bar` references `foo`. `tsc -b tsconfig.build.json` under `bar` will find `bar/tsconfig.build.json`, which is expected, but `tsc` will use `foo/tsconfig.json`, not `foo/tsconfig.build.json`, while compiling `foo`.
 
-4. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` will not find paths mapping, although `../../tsconfig.json` is given to ``ts-node-dev` (env var `TS_NODE_PROJECT` will not work, either).
+4. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` will not find paths mapping, although `../../tsconfig.json` is given to `ts-node-dev` (env var `TS_NODE_PROJECT` will not work, either).
 
 ### Module aliases and path mappings
 
@@ -90,7 +90,7 @@ Note that `bar` must not import `~foo`, `~foo/hello`, causing errors (I'm pretty
 }
 ```
 
-#### Module Aliases
+#### Module Aliases for node.js at runtime
 
 Though `~foo` or `~bar` will be resolved when `yarn dev` thanks to `tsconfig-paths` and just to be compiled well, they will throw an Error(`Module Not Found`) at runtime. That's where [`link-module-alias`](https://github.com/Rush/link-module-alias) comes in. By making symlink, `~foo` and `~bar` are resolved. The configuration resides in each package.json (by `_moduleAliases` field).
 
@@ -102,7 +102,21 @@ Though `~foo` or `~bar` will be resolved when `yarn dev` thanks to `tsconfig-pat
 
 Jest respects **path mapping** by automatically reading `tsconfig.json` and configuring `moduleNameMapper`. This is done by `ts-jest/utils`. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
 
-### Root commands
+### Link and Formatter
+
+`eslint` and `prettier` is used along each other. `eslint-config-airbnb-base` (not `eslint-config-airbnb`, which includes `jsx` rules) is used as well. eslint plugins for jest and markdown(not for markdown itself, but for code block snippet appeared in markdown) is also configured.
+
+By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript files are able to be linted by `eslint`. (e.g. So typescript rules are not applied to `.js` files.)
+
+[`markdownlint`](https://github.com/DavidAnson/markdownlint) is configured by [`markdownlint-cli`](https://github.com/igorshubovych/markdownlint-cli#readme).
+
+[`commitlint`](https://github.com/conventional-changelog/commitlint) is used as commit message linter. You can `yarn lint:md .`, for example. Refer to [conventional commits](https://www.conventionalcommits.org/en/) for more details.
+
+### Git Hooks
+
+`Husky` executes `lint-staged` and `commitlint` by git hooks. `lint-staged` makes sure staged files are to be formatted before committed. Refer to `package.json` for details.
+
+## Root commands
 
 Introducing some of commands specified in `package.json`.
 

@@ -21,15 +21,10 @@
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage/lcov-report",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
-    "lint": "tslint --project .",
-    "lint:fix": "tslint --project . --fix"
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {
     "link-module-alias": "^1.2.0",
     "@jjangga0214/foo": "^1.0.0"
-  },
-  "tslint": {
-    "extends": "../../tslint.json"
   }
 }
