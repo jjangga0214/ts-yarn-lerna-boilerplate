@@ -48,6 +48,8 @@ For `ts-node-dev` to understand **path mapping**, [`tsconfig-paths`](https://git
 
 `tsconfig.json` has this path mappings configuration.
 
+<!-- eslint-skip -->
+
 ```js
 {
   "baseUrl": "packages",
@@ -66,6 +68,8 @@ However, `~foo` and `~bar` are only used for package's interal use. For example,
 
 But be careful of `paths` orders for precedence. If the order changes, like the below, `~foo/hello` will be resolved to `foo/hello/src`, not `foo/src/hello`.
 
+<!-- eslint-skip -->
+
 ```js
 {
   "baseUrl": "packages",
@@ -78,6 +82,8 @@ But be careful of `paths` orders for precedence. If the order changes, like the 
 ```
 
 Note that `bar` must not import `~foo`, `~foo/hello`, causing errors (I'm pretty sure there's no reason to do that). But importing `@jjangga0214/foo/hello` in `bar` makes sense in some cases. For that, you should explicitly add additaional configuration like this.
+
+<!-- eslint-skip -->
 
 ```js
 {
