@@ -1,5 +1,7 @@
 # TypeScript + Yarn Workspace + Lerna Monorepo Boilerplate
 
+Feel free to make issues for any questions or suggestions.
+
 ## Lerna + Yarn Workspace
 
 Lerna respects and and delegates monorepo management to yarn workspace, by `'useWorkspaces': true` in [lerna.json](lerna.json). But Lerna is still useful, as it provides utility commands for monorepo workflow (e.g. selective subpackge script execution, versioning, or package publishing).
@@ -124,14 +126,24 @@ By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript 
 
 ## Root commands
 
-Introducing some of commands specified in `package.json`.
+Introducing some of commands specified in `package.json`. Refer to `package.json` for the full list.
 
 ```bash
 # remove compiled js folders, typescript build info, jest cache, *.log, and test coverage
 yarn clean
 
+# measure a single test coverage of entire packages
+yarn coverage
+
 # open web browser to show test coverage report.
 # run this AFTER running `yarn coverage`,
 # to make it sure there are reports before showing them.
 yarn coverage:show
+
+# lint code (ts, js, and js snippets on markdown)
+# e.g. yarn lint .
+yarn lint <path>
+
+# lint markdown
+yarn lint:md <path>
 ```
