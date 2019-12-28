@@ -5,11 +5,9 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/**",
-    "tools"
+    "packages/**"
   ],
   "scripts": {
-    "start": "echo start",
     "build": "lerna run --parallel build",
     "build:fresh": "yarn clean && yarn build",
     "clean": "shx rm -rf .build-cache *.log coverage junit.xml && lerna run --parallel clean",
