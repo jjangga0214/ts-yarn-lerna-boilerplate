@@ -6,5 +6,5 @@
     "tsBuildInfoFile": "../../.build-cache/bar.tsbuildinfo"
   },
   "include": ["src"],
-  "references": [{ "path": "../foo", "prepend": false }]
+  "references": [{ "path": "../foo/tsconfig.build.json", "prepend": false }]
 }
