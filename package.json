@@ -67,7 +67,7 @@
     "lerna": "^3.13.2",
     "lint-staged": "^8.1.5",
     "live-server": "^1.2.1",
-    "markdownlint-cli": "^0.20.0",
+    "markdownlint-cli": "^0.22.0",
     "prettier": "^1.16.4",
     "serve": "^11.2.0",
     "ts-jest": "^24.2.0",
