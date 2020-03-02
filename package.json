@@ -39,7 +39,7 @@
       "git add"
     ],
     "*.md": [
-      "yarn lint:md --fix",
+      "yarn format:md",
       "git add"
     ]
   },
