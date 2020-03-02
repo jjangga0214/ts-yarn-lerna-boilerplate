@@ -26,9 +26,9 @@ This project has two packages, `foo`(`@jjangga0214/foo`) and `bar`(`@jjangga0214
 
 1. VSCode only respects `tsconfig.json` as of writing (until [vscode/#12463](https://github.com/microsoft/vscode/issues/12463) is resolved.). Therefore, build-specific configurations (e.g. `include`, `exclude`, `rootDir`, etc) are in `tsconfig.build.json`. If you replace `tsconfig.build.json` by `tsconfig.json`, project workflow will still work (e.g. `compilation`, `yarn dev`, `test`), but VSCode will not help you by its feature, like `type checking`, or `go to definition`, etc.
 
-2. `yarn build` executes `tsc -p tsconfig.build.json`, thus it does not build referenced project. For example, `yarn build` under `bar` does not build `foo`, unlike `tsc -b tsconfig.build.json`. Even though `-b` option is not used, `project references` are still used. Indeed, it's necessary.
+2. `yarn build` in each package executes `tsc -b tsconfig.build.json`, not `tsc -p tsconfig.build.json`. This is to use typescript's **project reference** feature. For example, `yarn build` under `bar` builds itself and its dependancy, `foo` (More specifically, `foo` is compiled before `bar` is compiled). And this fits well with `--incremental` option specified in `tsconfig.json`, as build cache can be reused if `foo` (or even `bar`) was already compiled before.
 
-3. By the way, `tsc -b tsconfig.build.json` will mess working space. As it will find `tsconfig.json` from referenced project. For example, `bar` references `foo`. `tsc -b tsconfig.build.json` under `bar` will find `bar/tsconfig.build.json`, which is expected, but `tsc` will use `foo/tsconfig.json`, not `foo/tsconfig.build.json`, while compiling `foo`.
+3. Look at `packages/bar/tsconfig.build.json`. It explicitly refers `../foo/tsconfig.build.json`. Thus, `tsc -b tsconfig.build.json` under `bar` will use `packages/foo/tsconfig.build.json` to build `foo`.
 
 4. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` will not find paths mapping, although `../../tsconfig.json` is given to `ts-node-dev` (env var `TS_NODE_PROJECT` will not work, either).
 
