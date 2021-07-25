@@ -8,12 +8,14 @@
   "files": [
     "dist"
   ],
-  "_moduleAliases": {
-    "~bar": "dist"
+  "imports": {
+    "#bar/*": {
+      "default": "./dist/*.js"
+    }
   },
   "scripts": {
     "postinstall": "shx mkdir -p dist",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
@@ -25,7 +27,6 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "link-module-alias": "^1.2.0",
     "@jjangga0214/foo": "^1.0.0"
   }
 }

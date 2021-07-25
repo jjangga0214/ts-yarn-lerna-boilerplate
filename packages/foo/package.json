@@ -11,13 +11,17 @@
   "_moduleAliases": {
     "~foo": "dist"
   },
+  "imports": {
+    "#foo/*": {
+      "default": "./dist/*.js"
+    }
+  },
   "scripts": {
-    "postinstall": "shx mkdir -p dist && link-module-alias",
-    "build": "tsc --build tsconfig.build.json && link-module-alias",
+    "build": "tsc --build tsconfig.build.json",
     "clean": "tsc --build tsconfig.build.json --clean && shx rm -rf coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
-    "test:integration": "jest test/unit",
+    "test:integration": "jest test/integration",
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
@@ -25,9 +29,6 @@
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
   },
-  "dependencies": {
-    "link-module-alias": "^1.2.0",
-    "shx": "^0.3.2"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }

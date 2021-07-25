@@ -7,9 +7,9 @@
     "baseUrl": "packages",
     "paths": {
       "@jjangga0214/*": ["*/src"],
-      "~foo/*": ["foo/src/*"],
-      "~bar/*": ["bar/src/*"],
-      "~*": ["*/src"]
+      "#foo/*": ["foo/src/*"],
+      "#bar/*": ["bar/src/*"],
+      "#*": ["*/src"]
     },
     "strict": true,
     "noUnusedLocals": true,

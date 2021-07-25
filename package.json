@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=14.6.0"
+  },
   "workspaces": [
     "packages/**"
   ],
@@ -35,12 +38,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.md": [
-      "yarn format:md",
-      "git add"
+      "yarn format:md"
     ]
   },
   "devDependencies": {
@@ -73,6 +74,7 @@
     "prettier": "^2.3.2",
     "serve": "^12.0.0",
     "ts-jest": "^27.0.4",
+    "ts-node": "^10.1.0",
     "ts-node-dev": "^1.1.8",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"

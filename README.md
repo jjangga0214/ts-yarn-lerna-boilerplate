@@ -98,9 +98,23 @@ Note that `bar` must not import `~foo`, `~foo/hello`, causing errors (I'm pretty
 }
 ```
 
-#### Module Aliases for node.js at runtime
+#### Module aliases (Subpath imports) for node.js at runtime
 
-Though `~foo` or `~bar` will be resolved when `yarn dev` thanks to `tsconfig-paths` and just to be compiled well, they will throw an Error(`Module Not Found`) at runtime. That's where [`link-module-alias`](https://github.com/Rush/link-module-alias) comes in. By making symlink, `~foo` and `~bar` are resolved. The configuration resides in each package.json (by `_moduleAliases` field).
+[Subpath imports](https://nodejs.org/api/packages.html#packages_subpath_imports) is added in v14.6.0 and v12.19.0.
+
+Though `#foo` or `#bar` will be resolved when `yarn dev` thanks to `tsconfig-paths` and just to be compiled well, they will throw an Error(`Module Not Found`) at runtime. That's where [`subpath imports`](https://nodejs.org/api/packages.html#packages_subpath_imports) comes in.
+
+`subpath imports` is added in nodejs v14.6.0 and v12.19.0.
+Thus, there is `engines` condition in package.json
+
+```jsonc
+// package.json
+{
+  "engines": {
+    "node": ">=14.6.0"
+  }
+}
+```
 
 <!-- markdownlint-disable no-duplicate-heading -->
 
