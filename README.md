@@ -12,12 +12,28 @@ Lerna respects and and delegates monorepo management to yarn workspace, by `'use
 
 ## Jest
 
-[ts-jest](https://github.com/kulshekhar/ts-jest) is used.
+[`ts-jest`](https://github.com/kulshekhar/ts-jest) is used.
 
 ## Dev
 
-[ts-node-dev](https://github.com/whitecolor/ts-node-dev) is used for `yarn dev`.
-You can replace it to [ts-node](https://github.com/TypeStrong/ts-node) is if you don't need features of [node-dev](https://github.com/fgnass/node-dev).
+[`ts-node-dev`](https://github.com/whitecolor/ts-node-dev) is used for `yarn dev`.
+You can replace it to [`ts-node`](https://github.com/TypeStrong/ts-node) is if you don't need features of [`node-dev`](https://github.com/fgnass/node-dev).
+
+In developerment environment, fast execution by rapid compiling is required.
+So, `ts-node` is configured to use [`swc`](https://swc.rs/) internally.
+(Refer to the [official docs](https://typestrong.org/ts-node/docs/transpilers#bundled-swc-integration))
+
+```jsonc
+{
+  "ts-node": {
+    "transpileOnly": true,
+    "transpiler": "ts-node/transpilers/swc-experimental"
+    // ... other options
+  }
+}
+```
+
+That's why `@swc/core` and `@swc/helpers` are also installed.
 
 ## Notes
 
@@ -39,14 +55,14 @@ There are several _3rd party_ solutions that resolves modules aliases.
 
 1. Runtime mapper: [`module-alias`](https://www.npmjs.com/package/module-alias), [`link-module-alias`](https://www.npmjs.com/package/link-module-alias), etc
 1. Transpiler/bundler: Babel plugins, Rollup, Webpack, etc
-1. Post-processor: [`tsc-alias`](https://github.com/justkey007/tsc-alias)
+1. Post-compile-processor: [`tsc-alias`](https://github.com/justkey007/tsc-alias)
 
 However, from node v14.6.0 and v12.19.0, node introduced a new **native** support for it, named [**Subpath Imports**](https://nodejs.org/api/packages.html#packages_subpath_imports).
-
 It enables specifying alias path in package.json and requires prefixing an alias by `#`.
 
-`subpath imports` is added from nodejs v14.6.0 and v12.19.0.
-Thus, there is `engines` condition in package.json
+This repo uses Subpath Import.
+
+There is `engines` restriction in package.json, as `subpath imports` is added from nodejs v14.6.0 and v12.19.0.
 
 ```jsonc
 // package.json
@@ -56,6 +72,8 @@ Thus, there is `engines` condition in package.json
   }
 }
 ```
+
+If you nodejs version does not fit in, you can consider _3rd party_ options.
 
 <!-- markdownlint-disable no-duplicate-heading -->
 
@@ -115,6 +133,15 @@ Note that `bar` must NOT import `#foo`, `#foo/hello`, causing errors (I'm pretty
 <!-- markdownlint-enable no-duplicate-heading -->
 
 For `ts-node-dev`(or `ts-node`) to understand **Path Mapping**, [`tsconfig-paths`](https://github.com/dividab/tsconfig-paths) is used.
+
+```jsonc
+{
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+    // other options
+  }
+}
+```
 
 <!-- markdownlint-disable no-duplicate-heading -->
 

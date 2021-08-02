@@ -8,9 +8,6 @@
   "files": [
     "dist"
   ],
-  "_moduleAliases": {
-    "~foo": "dist"
-  },
   "imports": {
     "#foo/*": {
       "default": "./dist/*.js"
