@@ -1,0 +1,132 @@
+name: Test and Conditionally Publish
+
+on:
+  push:
+    paths:
+      - '**.js'
+      - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
+      - '**/tsconfig.json'
+      - '**/jest.config.*'
+      - '**/package.json'
+      - 'yarn.lock'
+      - '**/eslint*'
+      - '**/prettier*'
+      - '.nvmrc'
+      - '.yarnrc'
+      - '.npmrc'
+      - '!.github/workflows/**'
+      - '.github/workflows/test.yaml' # SYNC: edit this if the file name is changed.
+    # paths-ignore:
+    #   - '**.md'
+    #   - 'docs/**'
+    #   - '.markdownlint*'
+    #   - '.editorconfig'
+    #   - '.gitattributes'
+    #   - '.gitignore'
+    #   - 'commitlint.config.*'
+    #   - 'LICENSE'
+    #   - '.github/workflows/**'
+    #   - '!.github/workflows/test.yaml' # SYNC: edit this if the file name is changed.
+    #   - '**/.vscode'
+    #   - '**/.env.example' # dotenv file which is committed as an example
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**.js'
+      - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
+      - '**/tsconfig.json'
+      - '**/jest.config.*'
+      - '**/package.json'
+      - 'yarn.lock'
+      - '**/eslint*'
+      - '**/prettier*'
+      - '.nvmrc'
+      - '.yarnrc'
+      - '.npmrc'
+      - '!.github/workflows/**'
+      - '.github/workflows/test.yaml' # SYNC: edit this if the file name is changed.
+
+jobs:
+  # [original source of job "check-if-to-skip"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)
+  check-if-to-skip:
+    runs-on: ubuntu-latest
+    # skip commits with [ci skip] or [skip ci], except on an action triggered by push of a version tag
+    if: "!( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') )"
+    steps:
+      - name: Check [ci skip] or [skip ci]
+        run: exit 0
+
+  test:
+    needs: check-if-to-skip
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "::set-output name=nvmrc::$(cat .nvmrc)"
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ steps.nvmrc.outputs.nvmrc }}
+
+      - name: Get yarn cache
+        id: yarn-cache-dir
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ steps.nvmrc.outputs.nvmrc }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Dependencies
+        run: yarn install --silent --frozen-lockfile
+
+      - name: Test And Measure Coverage
+        run: yarn test:ci .
+
+      - name: Lint
+        run: yarn lint:code .
+
+  # e2etest:
+  #   needs: test
+  #   runs-on: ${{ matrix.os }}
+
+  #   strategy:
+  #     matrix:
+  #       node-version: [15, 16]
+  #       os: [ubuntu-latest, macOS-latest, windows-latest]
+
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+
+  #     - name: Get yarn cache
+  #       id: yarn-cache-dir
+  #       run: echo "::set-output name=dir::$(yarn cache dir)"
+
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: ${{ steps.yarn-cache-dir.outputs.dir }}
+  #         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-yarn-
+
+  #     - name: Install Dependencies
+  #       run: yarn install --silent --frozen-lockfile
+
+  #     - name: Test
+  #       run: yarn test:e2e .

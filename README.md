@@ -20,7 +20,7 @@ There're' some cases module alias is useful.
 
 (There is another case (e.g. "exporting" alias), but I'd like to omit them as not needed in this context.)
 
-### Node.js: **Subpath Imports**
+### Node.js: [**Subpath Imports**](https://nodejs.org/api/packages.html#packages_subpath_imports)
 
 There are several _3rd party_ solutions that resolves modules aliases.
 
