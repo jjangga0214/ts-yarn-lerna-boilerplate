@@ -46,7 +46,6 @@ module.exports = {
       plugins: [...common.plugins, '@typescript-eslint'],
       extends: [
         ...common.extends,
-        'prettier/@typescript-eslint',
         'plugin:@typescript-eslint/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
