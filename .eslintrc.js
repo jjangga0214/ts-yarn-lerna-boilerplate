@@ -5,7 +5,12 @@ const common = {
     'jest/globals': true,
   },
   plugins: ['prettier', 'jest', 'markdown'],
-  extends: ['airbnb-base', 'prettier', 'plugin:jest/all'],
+  extends: [
+    'airbnb-base',
+    'prettier',
+    'plugin:jest/all',
+    'plugin:markdown/recommended', // REF: https://github.com/eslint/eslint-plugin-markdown/blob/main/lib/index.js
+  ],
   rules: {
     'prettier/prettier': 'error',
     'jest/no-disabled-tests': 'warn',
