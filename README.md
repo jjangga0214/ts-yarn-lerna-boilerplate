@@ -1,4 +1,20 @@
-# TypeScript + Yarn Workspace + Lerna Monorepo Boilerplate
+# TypeScript + Yarn Workspace + Lerna + Jest Monorepo Boilerplate
+
+[![license](https://img.shields.io/badge/license-MIT-ff4081.svg?style=flat-square&labelColor=black)](./LICENSE)
+[![test](https://img.shields.io/badge/test-jest-7c4dff.svg?style=flat-square&labelColor=black)](./jest.config.js)
+[![code style:airbnb](https://img.shields.io/badge/code_style-airbnb-448aff.svg?style=flat-square&labelColor=black)](https://github.com/airbnb/javascript)
+[![code style:prettier](https://img.shields.io/badge/code_style-prettier-18ffff.svg?style=flat-square&labelColor=black)](https://prettier.io/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-ffab00.svg?style=flat-square&labelColor=black)](https://conventionalcommits.org)
+[![Commitizen friendly](https://img.shields.io/badge/Commitizen-cz_conventional_changelog-dd2c00.svg?style=flat-square&labelColor=black)](http://commitizen.github.io/cz-cli/)
+![pr welcome](https://img.shields.io/badge/PRs-welcome-09FF33.svg?style=flat-square&labelColor=black)
+
+An example monorepo boilerplate for nodejs.
+
+This works well, and I've been carefully maintained it.
+
+Just clone this! Then read and compare with README.
+
+You'd grasp how this repo works.
 
 Feel free to make issues for any questions or suggestions.
 
@@ -14,9 +30,9 @@ Lerna respects and and delegates monorepo management to yarn workspace, by `'use
 
 There're' some cases module alias is useful.
 
-1. A package with a deep and wide directory tree: For example, let's say `foo/src/your/very/deep/module/index.ts` imports `../../../../another/deep/module/index`. In this case, absolute path from the root(e.g. `#foo`=`foo/src`) like `#foo/another/deep/module/index` can be more concise and maintainable.
+1. A package with a deep and wide directory tree: For example, let's say `foo/src/your/very/deep/module/index.ts` imports `../../../../another/deep/module/index`. In this case, absolute path from the root(e.g. alias `#foo` -> `foo/src`) like `#foo/another/deep/module/index` can be more concise and maintainable.
 
-1. Depending on another module not located in node_modules: This can happen in monorepo. For instance, `@jjangga0214/bar` depends on `@jjangga0214/foo`, but the dependancy does not exist in node_modules, but in `packages/foo` directory. In this case, creating an alias(`@jjangga0214/foo` -> `packages/foo/src`) is needed.
+1. Dependency not located in node_modules: This can happen in monorepo. For instance, `@jjangga0214/bar` depends on `@jjangga0214/foo`, but the dependancy does not exist in node_modules, but in `packages/foo` directory. In this case, creating an alias(`@jjangga0214/foo` -> `packages/foo/src`) is needed.
 
 (There is another case (e.g. "exporting" alias), but I'd like to omit them as not needed in this context.)
 
@@ -173,7 +189,7 @@ However, you can change it as you want.
 
 By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
 
-To use it, follow the steps below.
+To use `ts-jest`, follow the steps below.
 
 **jest.config.js**:
 

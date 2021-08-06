@@ -55,8 +55,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install --silent --frozen-lockfile
-        env:
-          CI: true
 
       - name: Lint
         run: yarn lint:md .

@@ -92,7 +92,7 @@ jobs:
         run: yarn install --silent --frozen-lockfile
 
       - name: Test And Measure Coverage
-        run: jest --coverage --ci --reporters=jest-junit
+        run: yarn jest --coverage --ci --reporters=jest-junit
 
       - name: Lint
         run: yarn lint .
