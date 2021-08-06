@@ -15,7 +15,6 @@
     "build:fresh": "yarn clean && yarn build",
     "clean": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",
     "test": "jest",
-    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "test:unit": "jest packages/*/test/unit",
     "test:integration": "jest packages/*/test/integration",
     "coverage": "jest --coverage",

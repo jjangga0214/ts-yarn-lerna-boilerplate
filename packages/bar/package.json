@@ -18,11 +18,9 @@
     "clean": "tsc --build tsconfig.build.json --clean && del coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
-    "test:watch": "jest --watch",
-    "test:ci": "jest --coverage --ci --reporters='jest-junit'",
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {

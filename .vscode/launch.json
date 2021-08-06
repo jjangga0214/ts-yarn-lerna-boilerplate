@@ -1,0 +1,68 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run via 'node <source>'",
+      "type": "node",
+      "request": "launch",
+      "cwd": ".",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["${input:filepath}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Run via 'yarn ts-node'",
+      "request": "launch",
+      "type": "node",
+      "cwd": ".",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["ts-node", "${input:filepath}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Run via 'yarn workspace <project> dev'",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["workspace", "${input:projectPackage}", "dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Run via 'yarn workspace <project> test' --testNamePattern",
+      "type": "node",
+      "request": "launch",
+      "cwd": ".",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "workspace",
+        "${input:projectPackage}",
+        "test",
+        "--testNamePattern",
+        "${input:--testNamePattern}"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "filepath",
+      "type": "promptString",
+      "description": "What is the file path relative from cwd?"
+    },
+    {
+      "id": "projectPackage",
+      "type": "promptString",
+      "description": "What is the package name?"
+    },
+    {
+      "id": "--testNamePattern",
+      "type": "promptString",
+      "description": "What is the argument for `--testNamePattern` option?"
+    }
+  ]
+}
