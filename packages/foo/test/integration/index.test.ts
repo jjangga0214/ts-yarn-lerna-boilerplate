@@ -1,4 +1,4 @@
-import { doubleNumbers } from '~foo'
+import { doubleNumbers } from '#foo'
 
 describe('this is an unit test', () => {
   it('doubleNumbers', () => {

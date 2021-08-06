@@ -1,4 +1,4 @@
-import { doubleNumbers } from '~foo'
+import { doubleNumbers } from '#foo'
 
 describe('index', () => {
   it('doubleNumbers', () => {

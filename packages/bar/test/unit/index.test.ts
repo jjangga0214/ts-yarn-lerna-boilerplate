@@ -1,4 +1,4 @@
-import { run } from '~bar'
+import { run } from '#bar'
 
 describe('index', () => {
   it('run', () => {
