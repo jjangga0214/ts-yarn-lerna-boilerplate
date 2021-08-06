@@ -163,7 +163,7 @@ By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript 
 
 ### Git Hooks
 
-`Husky` executes `lint-staged` and `commitlint` by git hooks. `lint-staged` makes sure staged files are to be formatted before committed. Refer to `package.json` for details.
+[`Husky`](https://typicode.github.io/husky/) executes [`lint-staged`](https://github.com/okonet/lint-staged) and [`commitlint`](https://github.com/conventional-changelog/commitlint) by git hooks. `lint-staged` makes sure staged files are to be formatted before committed. Refer to [`.husky/*`](./.husky) for details.
 
 ## Root commands
 

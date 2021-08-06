@@ -28,13 +28,8 @@
     "format": "yarn lint --fix",
     "format:md": "yarn lint:md --fix",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
-    "commit": "git cz"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "commit": "git cz",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
