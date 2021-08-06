@@ -85,7 +85,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest',
+  // preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: null,
@@ -158,6 +158,7 @@ module.exports = {
   // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
   // timers: "real",
 
+  transform: { '^.+\\.(t|j)sx?$': ['@swc/jest'] },
   // A map from regular expressions to paths to transformers
   // transform: {
   //   '.(ts|tsx)': 'ts-jest',

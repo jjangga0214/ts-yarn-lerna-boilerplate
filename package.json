@@ -43,6 +43,7 @@
     "@commitlint/config-conventional": "^13.1.0",
     "@swc/core": "^1.2.66",
     "@swc/helpers": "^0.2.12",
+    "@swc/jest": "^0.1.4",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.2",
     "@typescript-eslint/eslint-plugin": "^4.28.4",

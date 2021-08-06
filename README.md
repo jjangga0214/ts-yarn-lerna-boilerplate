@@ -28,12 +28,10 @@ There are several _3rd party_ solutions that resolves modules aliases.
 1. Transpiler/bundler: Babel plugins, Rollup, Webpack, etc
 1. Post-compile-processor: [`tsc-alias`](https://github.com/justkey007/tsc-alias)
 
-That's why @swc/core and @swc/helpers are also installed.
-
 However, from node v14.6.0 and v12.19.0, node introduced a new **native** support for it, named [**Subpath Imports**](https://nodejs.org/api/packages.html#packages_subpath_imports).
 It enables specifying alias path in package.json and requires prefixing an alias by `#`.
 
-This repo uses Subpath Import.
+This repo uses **Subpath Import**.
 
 **`foo`'s package.json**
 
@@ -154,11 +152,57 @@ In developerment environment, fast execution by rapid compilation is useful.
 
 ## Jest
 
-[`ts-jest`](https://github.com/kulshekhar/ts-jest) is used. It enables you to write test code in typescript (not in javascript), and execute it without explict compilation. The compilation would be done automatically on background. However, if this behavior does not fit into you case (e.g. due to performance(?), fine-grained control(?)), but still want typescript test code, you can just compile it manually and execute it with `node`, as you used to do with javascript.
+If you write test code in javascript, you can do you used to do without additional configuration.
+However, if you write your code in typescript, there are several ways in general.
 
-By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and configuring `moduleNameMapper`. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
+You can consider `tsc`, `@babel/preset-typescript`, [`ts-jest`](https://github.com/kulshekhar/ts-jest), [`@swc/jest`](https://www.npmjs.com/package/@swc/jest), and so on. And there're pros/cons.
 
-### Linter and Formatter
+- `tsc` and `@babel/preset-typescript` requires explict 2 steps (compilation + execution), while `ts-jest` and `@swc/jest` does not (compilation is done under the hood).
+
+- `@babel/preset-typescript` and `@swc/jest` does not type-check (do only transpilation), while `tsc` and `ts-jest` do. (Note that `@swc/jest` plans to implement type-check. Issue and status: [swc-project/swc#571](https://github.com/swc-project/swc/issues/571))
+
+- `@swc/jest` is very fast, and `tsc` "can be" fast.
+  - For example, `ts-jest` took 5.756 s while `@swc/jest` took 0.962 s for entire tests in this repo.
+  - You can use incremental(`--incremental`) compilation if using `tsc`. You also can turn off type-check for rapid compilation(`--noEmit`). Since [microsoft/TypeScript#39122](https://github.com/microsoft/TypeScript/pull/39122), using `--incremental` and `--noEmit` simultaneously became possible.
+
+In this article, I'd like to introduce `ts-jest` and `@swc/jest`.
+In this repo, `@swc/jest` is preconfigured (as it is very fast of course).
+However, you can change it as you want.
+
+### [`ts-jest`](https://github.com/kulshekhar/ts-jest)
+
+By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
+
+To use it, follow the steps below.
+
+**jest.config.js**:
+
+```jsonc
+{
+  // UNCOMMENT THE LINE BELOW TO ENABLE ts-jest
+  // preset: 'ts-jest',
+  // DELETE THE LINE BELOW TO DISABLE @swc/jest in favor of ts-jest
+  "transform": { "^.+\\.(t|j)sx?$": ["@swc/jest"] }
+}
+```
+
+```shell
+yarn remove -W @swc/jest
+```
+
+### [`@swc/jest`](https://www.npmjs.com/package/@swc/jest)
+
+[`swc`](https://swc.rs/) is very fast ts/js compiler written in Rust, and `@swc/jest` uses it under the hood.
+
+Jest respects **Path Mapping** by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured.
+
+Just remove `ts-jest` as you would only need `@swc/jest`.
+
+```shell
+yarn remove -W ts-jest
+```
+
+## Linter and Formatter
 
 `eslint` and `prettier` is used along each other.
 
@@ -174,7 +218,7 @@ By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript 
 
 [`commitlint`](https://github.com/conventional-changelog/commitlint) is used as commit message linter. You can `yarn lint:md .`, for example. Refer to [conventional commits](https://www.conventionalcommits.org/en/) for more details.
 
-### Git Hooks
+## Git Hooks
 
 [`Husky`](https://typicode.github.io/husky/) executes [`lint-staged`](https://github.com/okonet/lint-staged) and [`commitlint`](https://github.com/conventional-changelog/commitlint) by git hooks. `lint-staged` makes sure staged files are to be formatted before committed. Refer to [`.husky/*`](./.husky) for details.
 
