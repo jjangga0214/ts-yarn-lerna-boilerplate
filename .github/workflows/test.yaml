@@ -93,6 +93,8 @@ jobs:
 
       - name: Test And Measure Coverage
         run: yarn jest --coverage --ci --reporters=jest-junit
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./coverage
 
       - name: Lint
         run: yarn lint .
