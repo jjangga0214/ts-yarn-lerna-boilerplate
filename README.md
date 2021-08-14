@@ -28,11 +28,11 @@ Lerna respects and and delegates monorepo management to yarn workspace, by `'use
 
 ## Module Aliases
 
-There're' some cases module alias is useful.
+There're' some cases module alias becomes useful.
 
 1. A package with a deep and wide directory tree: For example, let's say `foo/src/your/very/deep/module/index.ts` imports `../../../../another/deep/module/index`. In this case, absolute path from the root(e.g. alias `#foo` -> `foo/src`) like `#foo/another/deep/module/index` can be more concise and maintainable.
 
-1. Dependency not located in node_modules: This can happen in monorepo. For instance, `@jjangga0214/bar` depends on `@jjangga0214/foo`, but the dependancy does not exist in node_modules, but in `packages/foo` directory. In this case, creating an alias(`@jjangga0214/foo` -> `packages/foo/src`) is needed.
+1. Dependency not located in node_modules: This can happen in monorepo. For instance, `@jjangga0214/bar` depends on `@jjangga0214/foo`, but the dependancy does not exist in node_modules, but in `packages/foo` directory. In this case, creating an alias(`@jjangga0214/foo` -> `packages/foo/src`(ts: Path Mapping)) is needed.
 
 (There is another case (e.g. "exporting" alias), but I'd like to omit them as not needed in this context.)
 
@@ -40,16 +40,18 @@ There're' some cases module alias is useful.
 
 There are several _3rd party_ solutions that resolves modules aliases.
 
-1. Runtime mapper: [`module-alias`](https://www.npmjs.com/package/module-alias), [`link-module-alias`](https://www.npmjs.com/package/link-module-alias), etc
-1. Transpiler/bundler: Babel plugins, Rollup, Webpack, etc
-1. Post-compile-processor: [`tsc-alias`](https://github.com/justkey007/tsc-alias)
+1. Runtime mapper: [`module-alias`](https://www.npmjs.com/package/module-alias), etc.
+1. Symlink: [`link-module-alias`](https://www.npmjs.com/package/link-module-alias), etc.
+1. Transpiler/bundler: Babel plugins, Rollup, Webpack, etc.
+1. Post-compile-processor: [`tsc-alias`](https://github.com/justkey007/tsc-alias), etc.
 
 However, from node v14.6.0 and v12.19.0, node introduced a new **native** support for it, named [**Subpath Imports**](https://nodejs.org/api/packages.html#packages_subpath_imports).
-It enables specifying alias path in package.json and requires prefixing an alias by `#`.
+It enables specifying alias path in package.json.
+It requires prefixing an alias by `#`.
 
 This repo uses **Subpath Import**.
 
-**`foo`'s package.json**
+**`foo`'s package.json**:
 
 ```jsonc
 {
@@ -131,6 +133,8 @@ You can replace it to [`ts-node`](https://github.com/TypeStrong/ts-node) if you 
 
 For `ts-node-dev`(or `ts-node`) to understand **Path Mapping**, [`tsconfig-paths`](https://github.com/dividab/tsconfig-paths) is used.
 
+**tsconfig.json**:
+
 ```jsonc
 {
   "ts-node": {
@@ -140,11 +144,26 @@ For `ts-node-dev`(or `ts-node`) to understand **Path Mapping**, [`tsconfig-paths
 }
 ```
 
+Until [wclr/ts-node-dev#286](https://github.com/wclr/ts-node-dev/issues/286) is resolved, `"ts-node"` field in **tsconfig.json** will be ignored by `ts-node-dev`. Thus it should be given by command options (e.g `-r` below.). This is not needed if you only use `ts-node`, not `ts-node-dev`.
+
+**Each packages' package.json**:
+
+```jsonc
+{
+  "scripts": {
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts"
+  }
+  // Other options are ommitted for brevity.
+}
+```
+
 ### Extraneous Configuration
 
 In developerment environment, fast execution by rapid compilation is useful.
 `ts-node` is configured to use [`swc`](https://swc.rs/) internally.
 (Refer to the [official docs](https://typestrong.org/ts-node/docs/transpilers#bundled-swc-integration) -> That's why `@swc/core` and `@swc/helpers` are installed.)
+
+**tsconfig.json**:
 
 ```jsonc
 {
@@ -164,18 +183,18 @@ In developerment environment, fast execution by rapid compilation is useful.
 
 1. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` would not find Paths Mapping, although `../../tsconfig.json` is given to `ts-node-dev` (env var `TS_NODE_PROJECT` wouldn't work, neither).
 
-1. **Path Mapping** should only be located in "project root `tsconfig.json`", even if certain some aliases are only for package's internal use. This is becaue [`tsconfig-paths` does not fully respect **Project References**](https://github.com/dividab/tsconfig-paths/issues/153). (If you does not use `tsconfig-paths`, this is not an issue.)
+1. **Path Mapping** should only be located in "project root `tsconfig.json`", even if certain some aliases are only for package's internal use. This is because `tsconfig-paths` does not fully respect **Project References** ([dividab/tsconfig-paths#153](https://github.com/dividab/tsconfig-paths/issues/153)). (If you do not use `tsconfig-paths`, this is not an issue.)
 
 ## Jest
 
-If you write test code in javascript, you can do you used to do without additional configuration.
-However, if you write your code in typescript, there are several ways in general.
+If you write test code in javascript, you can do what you used to do without additional configuration.
+However, if you write test code in typescript, there are several ways to execute test in general.
 
 You can consider `tsc`, `@babel/preset-typescript`, [`ts-jest`](https://github.com/kulshekhar/ts-jest), [`@swc/jest`](https://www.npmjs.com/package/@swc/jest), and so on. And there're pros/cons.
 
 - `tsc` and `@babel/preset-typescript` requires explict 2 steps (compilation + execution), while `ts-jest` and `@swc/jest` does not (compilation is done under the hood).
 
-- `@babel/preset-typescript` and `@swc/jest` does not type-check (do only transpilation), while `tsc` and `ts-jest` do. (Note that `@swc/jest` plans to implement type-check. Issue and status: [swc-project/swc#571](https://github.com/swc-project/swc/issues/571))
+- `@babel/preset-typescript` and `@swc/jest` do not type-check (do only transpilation), while `tsc` and `ts-jest` do. (Note that `@swc/jest` plans to implement type-check. Issue and status: [swc-project/swc#571](https://github.com/swc-project/swc/issues/571))
 
 - `@swc/jest` is very fast, and `tsc` "can be" fast.
   - For example, `ts-jest` took 5.756 s while `@swc/jest` took 0.962 s for entire tests in this repo.
@@ -187,7 +206,24 @@ However, you can change it as you want.
 
 ### [`ts-jest`](https://github.com/kulshekhar/ts-jest)
 
-By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
+By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured like below. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
+
+**jest.config.js**:
+
+```js
+const { pathsToModuleNameMapper } = require('ts-jest/utils')
+// Note that json import does not work if it contains comments, which tsc just ignores for tsconfig.
+const { compilerOptions } = require('./tsconfig')
+
+module.exports = {
+  moduleNameMapper: {
+    ...pathsToModuleNameMapper(
+      compilerOptions.paths /* , { prefix: '<rootDir>/' }, */,
+    ),
+  },
+  // Other options are ommited for brevity.
+}
+```
 
 To use `ts-jest`, follow the steps below.
 
@@ -202,13 +238,15 @@ To use `ts-jest`, follow the steps below.
 }
 ```
 
+And
+
 ```shell
 yarn remove -W @swc/jest
 ```
 
 ### [`@swc/jest`](https://www.npmjs.com/package/@swc/jest)
 
-[`swc`](https://swc.rs/) is very fast ts/js compiler written in Rust, and `@swc/jest` uses it under the hood.
+[`swc`](https://swc.rs/) is very fast ts/js transpiler written in Rust, and `@swc/jest` uses it under the hood.
 
 Jest respects **Path Mapping** by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured.
 
