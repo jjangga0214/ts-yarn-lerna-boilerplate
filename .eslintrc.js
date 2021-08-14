@@ -34,6 +34,7 @@ const common = {
 }
 
 module.exports = {
+  // ...common,
   root: true,
   overrides: [
     {
@@ -41,10 +42,38 @@ module.exports = {
       eslint-plugin-markdown only finds javascript code block snippet.
       For specific spec, refer to https://github.com/eslint/eslint-plugin-markdown
       */
-      files: ['**/*.js', '**/*.md'],
       ...common,
+      files: ['**/*.js'],
     },
     {
+      /*
+      eslint-plugin-markdown only finds javascript code block snippet.
+      For specific spec, refer to https://github.com/eslint/eslint-plugin-markdown
+      */
+      files: ['**/*.md'],
+      processor: 'markdown/markdown',
+    },
+    {
+      ...common,
+      // In eslint-plugin-markdown v2, configuration for fenced code blocks is separate from the
+      // containing Markdown file. Each code block has a virtual filename
+      // appended to the Markdown file's path.
+      files: ['**/*.md/*.js'],
+      // Configuration for fenced code blocks goes with the override for
+      // the code block's virtual filename, for example:
+      parserOptions: {
+        ecmaFeatures: {
+          impliedStrict: true,
+        },
+      },
+      rules: {
+        ...common.rules,
+        'import/no-unresolved': 'off',
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+    {
+      ...common,
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       env: common.env,
