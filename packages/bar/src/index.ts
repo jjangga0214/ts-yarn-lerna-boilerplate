@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import { doubleNumbers } from '@jjangga0214/foo'
 
 export const run = () => {
