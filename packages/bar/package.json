@@ -20,7 +20,7 @@
     "test:unit": "jest test/unit",
     "coverage": "jest --coverage",
     "coverage:show": "live-server coverage",
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
