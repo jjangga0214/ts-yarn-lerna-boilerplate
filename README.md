@@ -250,11 +250,27 @@ yarn remove -W @swc/jest
 
 Jest respects **Path Mapping** by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured.
 
-Just remove `ts-jest` as you would only need `@swc/jest`.
+Do not remove(`yarn remove -W ts-jest`) ts-jest just because you use `@swc/jest`.
+Thoough `@swc/jest` replaces `ts-jest` completely, `ts-jest/utils` is used in jest.config.js.
 
-```shell
-yarn remove -W ts-jest
+**jest.config.js**:
+
+```js
+const { pathsToModuleNameMapper } = require('ts-jest/utils')
+// Note that json import does not work if it contains comments, which tsc just ignores for tsconfig.
+const { compilerOptions } = require('./tsconfig')
+
+module.exports = {
+  moduleNameMapper: {
+    ...pathsToModuleNameMapper(
+      compilerOptions.paths /* , { prefix: '<rootDir>/' }, */,
+    ),
+  },
+  // Other options are ommited for brevity.
+}
 ```
+
+If you want to configure `moduleNameMapper` manually, then you don't need `ts-jest`.
 
 ## Linter and Formatter
 
