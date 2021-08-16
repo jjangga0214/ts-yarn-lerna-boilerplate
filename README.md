@@ -272,6 +272,15 @@ module.exports = {
 
 If you want to configure `moduleNameMapper` manually, then you don't need `ts-jest`.
 
+#### Additional Dependencies
+
+Currently swc does not provide some features of babel plugins ([REF](https://swc.rs/docs/comparison-babel)).
+Thus additional dependencies might be needed. (You will be able to know what to install by reading error message if it appears.)
+
+A list of already installed packages in this repo is:
+
+- [`regenerator-runtime`](https://www.npmjs.com/package/regenerator-runtime): Needed when passing async callback to jest's `it` or `test` function.
+
 ## Linter and Formatter
 
 `eslint` and `prettier` is used along each other.
