@@ -181,7 +181,7 @@ In developerment environment, fast execution by rapid compilation is useful.
 
 1. `yarn build` in each package executes `tsc -b tsconfig.build.json`, not `tsc -p tsconfig.build.json`. This is to use typescript's [**Project References**](https://www.typescriptlang.org/docs/handbook/project-references.html) feature. For example, `yarn build` under `bar` builds itself and its dependancy, `foo` (More specifically, `foo` is compiled before `bar` is compiled). Look at `packages/bar/tsconfig.build.json`. It explicitly refers `../foo/tsconfig.build.json`. Thus, `tsc -b tsconfig.build.json` under `bar` will use `packages/foo/tsconfig.build.json` to build `foo`. And this fits well with [`--incremental`](https://www.typescriptlang.org/tsconfig/#incremental) option specified in `tsconfig.json`, as build cache can be reused if `foo` (or even `bar`) was already compiled before.
 
-1. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` would not find Paths Mapping, although `../../tsconfig.json` is given to `ts-node-dev` (env var `TS_NODE_PROJECT` wouldn't work, neither).
+1. Each packages has their own `tsconfig.json`. That's because `ts-node-dev --project ../../tsconfig.json -r tsconfig-paths/register src/index.ts` would not find Paths Mapping, although `../../tsconfig.json` is given to `ts-node-dev` (env var `TS_NODE_PROJECT` wouldn't work, either).
 
 1. **Path Mapping** should only be located in "project root `tsconfig.json`", even if certain some aliases are only for package's internal use. This is because `tsconfig-paths` does not fully respect **Project References** ([dividab/tsconfig-paths#153](https://github.com/dividab/tsconfig-paths/issues/153)). (If you do not use `tsconfig-paths`, this is not an issue.)
 
@@ -251,7 +251,7 @@ yarn remove -W @swc/jest
 Jest respects **Path Mapping** by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured.
 
 Do not remove(`yarn remove -W ts-jest`) ts-jest just because you use `@swc/jest`.
-Thoough `@swc/jest` replaces `ts-jest` completely, `ts-jest/utils` is used in jest.config.js.
+Though `@swc/jest` replaces `ts-jest` completely, `ts-jest/utils` is used in jest.config.js.
 
 **jest.config.js**:
 
