@@ -194,11 +194,12 @@ You can consider `tsc`, `@babel/preset-typescript`, [`ts-jest`](https://github.c
 
 - `tsc` and `@babel/preset-typescript` requires explict 2 steps (compilation + execution), while `ts-jest` and `@swc/jest` does not (compilation is done under the hood).
 
-- `@babel/preset-typescript` and `@swc/jest` do not type-check (do only transpilation), while `tsc` and `ts-jest` do. (Note that `@swc/jest` plans to implement type-check. Issue and status: [swc-project/swc#571](https://github.com/swc-project/swc/issues/571))
+- `@babel/preset-typescript` and `@swc/jest` do not type-check (do only transpilation), while `tsc` and `ts-jest` do. (Note that `@swc/jest` plans to implement type-check. Issue and status: [swc-project/swc#571](https://github.com/swc-project/swc/issues/571)) (Note: By `tsc`, you can turn off transpilation (to save time) but force type-check ([`--noEmit`](https://www.typescriptlang.org/tsconfig/#noEmit)) only when you want (e.g. git commit hook). By doing so, for instance, you can run test many times (e.g. test failure -> fix -> test failure -> fix -> test success) very fast on your local machine, and finally type-check before `git commit`, reducing total time cost. Since [microsoft/TypeScript#39122](https://github.com/microsoft/TypeScript/pull/39122), using `--incremental` and `--noEmit` simultaneously also became possible.)
 
 - `@swc/jest` is very fast, and `tsc` "can be" fast.
   - For example, `ts-jest` took 5.756 s while `@swc/jest` took 0.962 s for entire tests in this repo.
-  - You can use incremental(`--incremental`) compilation if using `tsc`. You also can turn off type-check for rapid compilation(`--noEmit`). Since [microsoft/TypeScript#39122](https://github.com/microsoft/TypeScript/pull/39122), using `--incremental` and `--noEmit` simultaneously became possible.
+  - You can use incremental(`--incremental`) compilation if using `tsc`.
+  - If it's possible to turn off `tsc`'s type-check, `tsc` can become "much" faster. This behaviour is not implemented yet (issue: [microsoft/TypeScript#29651](https://github.com/microsoft/TypeScript/issues/29651)).
 
 In this article, I'd like to introduce `ts-jest` and `@swc/jest`.
 In this repo, `@swc/jest` is preconfigured (as it is very fast of course).
