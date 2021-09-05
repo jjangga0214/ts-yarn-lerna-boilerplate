@@ -284,19 +284,68 @@ A list of already installed packages in this repo is:
 
 ## Linter and Formatter
 
-`eslint` and `prettier` is used along each other.
+`eslint` and `prettier` is used along each other. You can run `yarn lint <target>`.
 
-[`eslint-config-airbnb-base`](https://www.npmjs.com/package/eslint-config-airbnb-base) is configured. If additional `jsx` rules are needed, you can replace it by [`eslint-config-airbnb`](https://www.npmjs.com/package/eslint-config-airbnb-base).
+### Airbnb Style
 
-[`eslint-plugin-markdown`](https://github.com/eslint/eslint-plugin-markdown) is not for markdown itself, but for javascript code block snippet appeared in markdown.
+This repo accepted airbnb style. [`eslint-config-airbnb-base`](https://www.npmjs.com/package/eslint-config-airbnb-base) and [`eslint-config-airbnb-typescript`](https://www.npmjs.com/package/eslint-config-airbnb-typescript) is configured.
 
-[`eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest/issues) is needed to lint jest code.
+If you need `jsx` and `tsx` rules, you should install `eslint-config-airbnb` instead of `eslint-config-airbnb-base`.
 
-By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript files are able to be linted by `eslint`. (e.g. So typescript rules are not applied to `.js` files.)
+```shell
+yarn add -D -W eslint-config-airbnb
+```
 
-[`markdownlint`](https://github.com/DavidAnson/markdownlint) is configured by [`markdownlint-cli`](https://github.com/igorshubovych/markdownlint-cli#readme).
+And reconfigure .eslintrc.js as follows.
 
-[`commitlint`](https://github.com/conventional-changelog/commitlint) is used as commit message linter. You can `yarn lint:md .`, for example. Refer to [conventional commits](https://www.conventionalcommits.org/en/) for more details.
+**.eslintrc.js**:
+
+```js
+// Other options are ommitted for brevity
+const common = {
+  extends: [
+    'airbnb-base', // "-base" does not include tsx rules.
+    // 'airbnb' // Uncomment this line and remove the above line if tsx rules are needed. (Also install eslint-config-airbnb pacakge)
+  ],
+}
+// Other options are ommitted for brevity
+module.exports = {
+  overrides: [
+    {
+      files: [
+        '**/*.ts',
+        // '**/*.tsx' // Uncomment this line if tsx rules are needed.
+      ],
+      extends: [
+        'airbnb-typescript/base', // "/base" does not include tsx rules.
+        // 'airbnb-typescript' // Uncomment this line and remove the above line if tsx rules are needed.
+      ],
+    },
+  ],
+}
+```
+
+### [`eslint-plugin-markdown`](https://github.com/eslint/eslint-plugin-markdown)
+
+It is not for markdown itself, but for javascript code block snippet appeared in markdown.
+
+### [`eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest/issues)
+
+It is needed to lint jest code.
+
+### Overrides
+
+By configuring `overrides` in `.eslintrc.js`, both of typescript and javascript files are able to be linted by `eslint`. (e.g. So typescript rules are not applied to `.js` files. Otherwise, it would cause errors.)
+
+### [`markdownlint`](https://github.com/DavidAnson/markdownlint) and [`markdownlint-cli`](https://github.com/igorshubovych/markdownlint-cli#readme)
+
+`markdownlint-cli` uses `markdownlint` under the hood, and the cli respects `.markdownlintignore`. You can `yarn lint:md <target>`.
+
+You can also install vscode extension [`vscode-markdownlint`](https://open-vsx.org/extension/DavidAnson/vscode-markdownlint).
+
+### [`commitlint`](https://github.com/conventional-changelog/commitlint)
+
+It is used as commit message linter. This repo follows [**Conventional Commits**](https://www.conventionalcommits.org/) style for git commit message. [`@commitlint/config-conventional`](https://www.npmjs.com/package/@commitlint/config-conventional) is configured as preset, and `commitlint` is executed by `husky` for git's `commit-msg` hook.
 
 ## Git Hooks
 

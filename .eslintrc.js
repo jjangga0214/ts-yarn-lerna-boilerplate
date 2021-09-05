@@ -7,10 +7,13 @@ const common = {
   plugins: ['prettier', 'jest', 'markdown'],
   extends: [
     'airbnb-base',
-    'prettier',
     'plugin:jest/all',
     'plugin:markdown/recommended', // REF: https://github.com/eslint/eslint-plugin-markdown/blob/main/lib/index.js
+    'prettier',
   ],
+  parserOptions: {
+    project: './tsconfig.json', // REF: https://www.npmjs.com/package/eslint-config-airbnb-typescript
+  },
   rules: {
     'prettier/prettier': 'error',
     'jest/no-disabled-tests': 'warn',
@@ -80,10 +83,12 @@ module.exports = {
       plugins: [...common.plugins, '@typescript-eslint'],
       extends: [
         ...common.extends,
+        'airbnb-typescript/base', // "base" does not include tsx rules. REF: https://www.npmjs.com/package/eslint-config-airbnb-typescript
         'plugin:@typescript-eslint/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
+        'prettier', // Let prettier has high priority
       ],
       rules: {
         ...common.rules,
