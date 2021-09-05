@@ -207,7 +207,7 @@ However, you can change it as you want.
 
 ### [`ts-jest`](https://github.com/kulshekhar/ts-jest)
 
-By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured like below. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
+By `ts-jest/utils`, Jest respects **Path Mapping** automatically by reading `tsconfig.json` and `moduleNameMapper`(in `jest.config.js`), which are, in this repo, already configured as follows. See how `moduleNameMapper` is handeled in `jest.config.js` and refer to [docs](https://kulshekhar.github.io/ts-jest/user/config/#paths-mapping) for more details.
 
 **jest.config.js**:
 
