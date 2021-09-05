@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "clean": "tsc --build tsconfig.build.json --clean && del coverage *.log junit.xml dist && jest --clearCache",
+    "clean": "tsc --build tsconfig.build.json --clean && del-cli coverage *.log junit.xml dist && jest --clearCache",
     "test": "jest",
     "test:unit": "jest test/unit",
     "coverage": "jest --coverage",

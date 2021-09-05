@@ -13,7 +13,7 @@
   "scripts": {
     "build": "lerna run --parallel build",
     "build:fresh": "yarn clean && yarn build",
-    "clean": "lerna run --parallel clean && shx rm -rf .build-cache *.log coverage junit.xml",
+    "clean": "lerna run --parallel clean && del-cli .build-cache *.log coverage junit.xml",
     "test": "jest",
     "test:unit": "jest packages/*/test/unit",
     "test:integration": "jest packages/*/test/integration",

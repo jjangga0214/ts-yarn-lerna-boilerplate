@@ -373,4 +373,10 @@ yarn lint <path>
 
 # lint markdown
 yarn lint:md <path>
+
+# test entire packages
+yarn test
+
+# build entire packages in parallel
+yarn build
 ```
