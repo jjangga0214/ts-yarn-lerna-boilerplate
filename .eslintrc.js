@@ -11,9 +11,6 @@ const common = {
     'plugin:markdown/recommended', // REF: https://github.com/eslint/eslint-plugin-markdown/blob/main/lib/index.js
     'prettier',
   ],
-  parserOptions: {
-    project: './tsconfig.json', // REF: https://www.npmjs.com/package/eslint-config-airbnb-typescript
-  },
   rules: {
     'prettier/prettier': 'error',
     'jest/no-disabled-tests': 'warn',
@@ -79,6 +76,9 @@ module.exports = {
       ...common,
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: './tsconfig.json', // REF: https://www.npmjs.com/package/eslint-config-airbnb-typescript
+      },
       env: common.env,
       plugins: [...common.plugins, '@typescript-eslint'],
       extends: [
@@ -88,7 +88,7 @@ module.exports = {
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
-        'prettier', // Let prettier has high priority
+        'prettier', // Let prettier have high priority
       ],
       rules: {
         ...common.rules,
