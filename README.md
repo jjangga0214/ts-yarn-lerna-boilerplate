@@ -10,7 +10,7 @@
 
 An example monorepo boilerplate for nodejs.
 
-This works well, and I've been carefully maintained it.
+This works well, and I've been carefully maintaining it.
 
 Just clone this! Then read and compare with README.
 
