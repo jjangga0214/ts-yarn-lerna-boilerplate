@@ -159,7 +159,7 @@ Until [wclr/ts-node-dev#286](https://github.com/wclr/ts-node-dev/issues/286) is 
 
 ### Extraneous Configuration
 
-In developerment environment, fast execution by rapid compilation is useful.
+In development environment, fast execution by rapid compilation is useful.
 `ts-node` is configured to use [`swc`](https://swc.rs/) internally.
 (Refer to the [official docs](https://typestrong.org/ts-node/docs/transpilers#bundled-swc-integration) -> That's why `@swc/core` and `@swc/helpers` are installed.)
 
